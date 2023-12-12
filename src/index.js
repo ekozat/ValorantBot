@@ -17,6 +17,11 @@ client.on('ready', (c) => {
     console.log(`${c.user.tag} is online.`)
 })
 
+// logs all the messages a user sends
+client.on('messageCreate', (msg) =>{
+    console.log(msg.content);
+})
+
 client.login(
     "MTE4MzkwNzk0OTUyMTkzMjM3OA.Gzx2zm.qJ9aDbodoKFyYyEFTfglfHiPVTYXei6uBwi9SY"
 );
