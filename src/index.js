@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // the structuring (importing package)
 const {Client, IntentsBitField} = require('discord.js');
 
@@ -22,8 +24,6 @@ client.on('messageCreate', (msg) =>{
     console.log(msg.content);
 })
 
-client.login(
-    "MTE4MzkwNzk0OTUyMTkzMjM3OA.Gzx2zm.qJ9aDbodoKFyYyEFTfglfHiPVTYXei6uBwi9SY"
-);
+client.login(process.env.TOKEN);
 
 
