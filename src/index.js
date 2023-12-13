@@ -19,11 +19,24 @@ client.on('ready', (c) => {
     console.log(`${c.user.tag} is online.`)
 })
 
-// logs all the messages a user sends
-client.on('messageCreate', (msg) =>{
-    console.log(msg.content);
+client.on('interactionCreate', (interaction) => {
+    // function only going to run if chat input is true
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName == 'valrng'){
+        interaction.reply('hey');
+
+        // add the rng for the valorant character
+    }
+    console.log(interaction.commandName);
 })
 
+// logs all the messages a user sends
+// client.on('messageCreate', (msg) =>{
+//     console.log(msg.content);
+// })
+
 client.login(process.env.TOKEN);
+
 
 
