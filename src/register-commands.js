@@ -1,3 +1,4 @@
+// Run this file to register any new slash commands before running the main file
 require('dotenv').config()
 
 const {REST, Routes} = require('discord.js');
@@ -5,8 +6,8 @@ const {REST, Routes} = require('discord.js');
 // array of objects that represent a single command
 const commands = [
     {
-        name: 'hey',
-        description: 'Replies with hey!',
+        name: 'valrng',
+        description: 'Generates random valorant agent',
     },
 ];
 
