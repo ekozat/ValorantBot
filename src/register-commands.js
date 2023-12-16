@@ -6,7 +6,7 @@ const {REST, Routes} = require('discord.js');
 // array of objects that represent a single command
 const commands = [
     {
-        name: 'valrng',
+        name: 'valbot',
         description: 'Generates random valorant agent',
     },
 ];
