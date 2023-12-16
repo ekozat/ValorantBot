@@ -7,12 +7,37 @@ let icons = [];
 let randomIndex;
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * (max + 1));
 }
 
 // the structuring (importing package)
 const {Client, IntentsBitField} = require('discord.js');
 const { fetchData } = require('./valorant-api.js');
+
+// Fetch API data
+fetchData()
+.then(jsonData => {
+    if (Array.isArray(jsonData.data)) {
+        dataLength = jsonData.data.length;
+        // Iterate through the array of agents
+        for (let i = 0; i < dataLength; i++) {
+            const agent = jsonData.data[i];
+            
+            if (agent.isPlayableCharacter == true){
+                characters.push(agent.uuid);
+                icons.push(agent.displayIcon);
+            }
+        }
+
+        // Test output
+        // console.log("Random Character UUID:", characters[randomIndex]);
+        // console.log("Corresponding Icon:", icons[randomIndex]);
+    }
+    
+})
+.catch(error => {
+    console.error('Error:', error);
+});
 
 // initialize client
 const client = new Client({
@@ -34,35 +59,13 @@ client.on('interactionCreate', (interaction) => {
     // function only going to run if chat input is true
     if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.commandName == 'valrng'){
+    if (interaction.commandName == 'valbot'){
 
-        // Fetch API data
-        fetchData()
-        .then(jsonData => {
-            if (Array.isArray(jsonData.data)) {
-                dataLength = jsonData.data.length;
-                // Iterate through the array of agents
-                for (let i = 0; i < dataLength; i++) {
-                    const agent = jsonData.data[i];
-                    characters.push(agent.uuid);
-                    icons.push(agent.displayIcon);
-                }
+        // RNG logic
+        randomIndex = getRandomInt(characters.length);
 
-                // RNG logic
-                randomIndex = getRandomInt(dataLength);
-
-                // Test output
-                // console.log("Random Character UUID:", characters[randomIndex]);
-                // console.log("Corresponding Icon:", icons[randomIndex]);
-            }
-
-            interaction.reply(icons[randomIndex]);
-            
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-        // interaction.reply('hey');
+        // Output icon to the player
+        interaction.reply(icons[randomIndex]);
     }
     // console.log(interaction.commandName);
 })
