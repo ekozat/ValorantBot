@@ -15,4 +15,5 @@ Keeping an instance alive in the back-end processing:
 - `pm2 list` to show all processes
 - `pm2 start ./startscript.js` in order to start an instance on production
 - `pm2 save` to keep it awake
+- Use --update-env to update environment variables
 
