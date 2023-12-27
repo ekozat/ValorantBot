@@ -1,5 +1,7 @@
 require('dotenv').config();
-        
+
+const environment = process.env.NODE_ENV || 'dev'; // Default to development
+
 // Handle the data returned by the API
 let dataLength;
 let characters = [];
@@ -13,6 +15,8 @@ function getRandomInt(max) {
 // the structuring (importing package)
 const {Client, IntentsBitField} = require('discord.js');
 const { fetchData } = require('./valorant-api.js');
+const config = require(`../config_${environment}.js`);
+
 
 // Fetch API data
 fetchData()
@@ -75,7 +79,7 @@ client.on('interactionCreate', (interaction) => {
 //     console.log(msg.content);
 // })
 
-client.login(process.env.TOKEN);
+client.login(config.TOKEN);
 
 
 

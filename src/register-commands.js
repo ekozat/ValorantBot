@@ -1,7 +1,10 @@
 // Run this file to register any new slash commands before running the main file
 require('dotenv').config()
 
+const environment = process.env.NODE_ENV || 'development'; // Default to development
+
 const {REST, Routes} = require('discord.js');
+const config = require(`../config_${environment}.js`);
 
 // array of objects that represent a single command
 const commands = [
@@ -12,7 +15,7 @@ const commands = [
 ];
 
 // implement REST API into project
-const rest = new REST ({version: '10'}).setToken(process.env.TOKEN);
+const rest = new REST ({version: '10'}).setToken(config.TOKEN);
 
 // anonymous function
 (async() => {
@@ -20,7 +23,7 @@ const rest = new REST ({version: '10'}).setToken(process.env.TOKEN);
         console.log('Registering slash commands...');
 
         await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            Routes.applicationGuildCommands(config.CLIENT_ID, config.GUILD_ID),
             {body: commands}
         );
 
