@@ -9,8 +9,13 @@ let characters = [];
 let icons = [];
 let randomIndex;
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+function getRandomInt(max, excludedNumbers) {
+    let randomNum;
+    do {
+        randomNum = Math.floor(Math.random() * max);
+    } while (excludedNumbers.includes(randomNum));
+
+    return randomNum;
 }
 
 // the structuring (importing package)
@@ -68,14 +73,18 @@ client.on('interactionCreate', (interaction) => {
 
         if (agentNum <= 5 && agentNum >= 1){
             let embeds = [];
+            let excludedNum = [];
 
             for (let i = 0; i < agentNum; i++){
                 // RNG logic
-                randomIndex = getRandomInt(characters.length);
+                randomIndex = getRandomInt(characters.length, excludedNum);
 
-                // remove duplicates
+                // test values
                 console.log(icons[randomIndex]);
                 console.log(randomIndex);
+
+                // removes duplicates
+                excludedNum.push(randomIndex);
 
                 // const embed = new EmbedBuilder().setImage(icons[randomIndex]);
                 embeds.push(new EmbedBuilder().setImage(icons[randomIndex]).setColor('#2F3136'));
