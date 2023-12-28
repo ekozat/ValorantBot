@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const environment = process.env.NODE_ENV || 'dev'; // Default to development
+const config = require(`../config_${environment}.js`);
 
 // Handle the data returned by the API
 let dataLength;
@@ -9,17 +10,17 @@ let icons = [];
 let randomIndex;
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * (max + 1));
+    return Math.floor(Math.random() * max);
 }
 
 // the structuring (importing package)
 const {Client, IntentsBitField} = require('discord.js');
-const { fetchData } = require('./valorant-api.js');
-const config = require(`../config_${environment}.js`);
+const { fetchAgentData } = require('./valorant-api.js');
+const { MessageEmbed } = require('discord.js');
 
 
 // Fetch API data
-fetchData()
+fetchAgentData()
 .then(jsonData => {
     if (Array.isArray(jsonData.data)) {
         dataLength = jsonData.data.length;
@@ -64,14 +65,31 @@ client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName == 'valbot'){
+        // Get the number inputted
+        let agentNum = interaction.options.get('agents').value;
 
-        // RNG logic
-        randomIndex = getRandomInt(characters.length);
+        if (agentNum <= 5 && agentNum >= 1){
+            let combinedAgents = [];
 
-        // Output icon to the player
-        interaction.reply(icons[randomIndex]);
+            for (let i = 0; i < agentNum; i++){
+                // RNG logic
+                randomIndex = getRandomInt(characters.length);
+
+                // remove duplicates
+                console.log(icons[randomIndex]);
+                console.log(randomIndex);
+
+                const embed = new MessageEmbed();
+                combinedAgents.push( embed.setImage(icons[randomIndex]));
+            }
+            
+            
+            const images = combinedAgents.map(url => `${url}`).join('\n');
+
+            // Output icon to the player
+            interaction.reply(images);
+        }
     }
-    // console.log(interaction.commandName);
 })
 
 // logs all the messages a user sends
