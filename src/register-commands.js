@@ -11,6 +11,14 @@ const commands = [
     {
         name: 'valbot',
         description: 'Generates random valorant agent',
+        options: [{
+            name: 'agents',
+            description: 'Number of agents',
+            type: 3,
+            min_value: 1,
+            max_value: 5,
+            required: true
+        }]
     },
 ];
 
