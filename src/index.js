@@ -14,10 +14,8 @@ function getRandomInt(max) {
 }
 
 // the structuring (importing package)
-const {Client, IntentsBitField} = require('discord.js');
+const {Client, IntentsBitField, EmbedBuilder} = require('discord.js');
 const { fetchAgentData } = require('./valorant-api.js');
-const { MessageEmbed } = require('discord.js');
-
 
 // Fetch API data
 fetchAgentData()
@@ -69,7 +67,7 @@ client.on('interactionCreate', (interaction) => {
         let agentNum = interaction.options.get('agents').value;
 
         if (agentNum <= 5 && agentNum >= 1){
-            let combinedAgents = [];
+            let embeds = [];
 
             for (let i = 0; i < agentNum; i++){
                 // RNG logic
@@ -79,18 +77,45 @@ client.on('interactionCreate', (interaction) => {
                 console.log(icons[randomIndex]);
                 console.log(randomIndex);
 
-                const embed = new MessageEmbed();
-                combinedAgents.push( embed.setImage(icons[randomIndex]));
+                // const embed = new EmbedBuilder().setImage(icons[randomIndex]);
+                embeds.push(new EmbedBuilder().setImage(icons[randomIndex]).setColor('#2F3136'));
+
+                // combinedAgents.push(embed);
             }
             
-            
-            const images = combinedAgents.map(url => `${url}`).join('\n');
+            interaction.reply({ embeds});
 
             // Output icon to the player
-            interaction.reply(images);
+            // interaction.reply(images);
         }
     }
 })
+
+// if (interaction.commandName == 'valbot'){
+//     // Get the number inputted
+//     let agentNum = interaction.options.get('agents').value;
+//     console.log(agentNum)
+
+//     if (agentNum <= 5 && agentNum >= 1){
+//         // RNG logic
+//         randomIndex = getRandomInt(characters.length);
+
+//         // remove duplicates
+//         console.log(icons[randomIndex]);
+//         console.log(randomIndex);
+            
+//         interaction.reply(icons[randomIndex]).then(() => {
+//             console.log(interaction.replied);
+            
+//             for (let i = 1; i < agentNum; i++){
+//                 if (interaction.replied){
+//                     randomIndex = getRandomInt(characters.length);
+//                     interaction.followUp(icons[randomIndex]);
+//                 }
+//             }
+//         });
+//     }
+// }
 
 // logs all the messages a user sends
 // client.on('messageCreate', (msg) =>{
