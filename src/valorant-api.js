@@ -11,7 +11,7 @@ const requestOptions = {
   // Other options like body for POST requests, etc.
 };
 
-function fetchData() {
+function fetchAgentData() {
     return new Promise((resolve, reject) => {
         fetch(apiUrl, requestOptions)
             .then(response => {
@@ -36,5 +36,5 @@ function fetchData() {
 
 // Export the fetchData function to make it accessible to other files
 module.exports = {
-    fetchData: fetchData,
+    fetchAgentData: fetchAgentData,
 };
