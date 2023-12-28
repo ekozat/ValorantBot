@@ -97,6 +97,9 @@ client.on('interactionCreate', (interaction) => {
             // Output icon to the player
             // interaction.reply(images);
         }
+        else{
+            interaction.reply('Please input an agent range from 1-5.')
+        }
     }
 })
 
