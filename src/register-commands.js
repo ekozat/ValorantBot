@@ -9,7 +9,7 @@ const config = require(`../config_${environment}.js`);
 // array of objects that represent a single command
 const commands = [
     {
-        name: 'valbot',
+        name: 'valagents',
         description: 'Generates random valorant agent',
         options: [{
             name: 'agents',
@@ -19,6 +19,10 @@ const commands = [
             max_value: 5,
             required: true
         }]
+    },
+    {
+        name: 'valgames',
+        description: 'Generates a random game mode'
     },
 ];
 
