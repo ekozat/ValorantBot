@@ -115,6 +115,20 @@ client.on('interactionCreate', (interaction) => {
                 // RNG logic
                 randomIndex = getRandomInt(characters.length, excludedNum);
 
+                // CHANCE FOR SURPRISE EVENT
+                // Generate a random number between 0 and 1
+                const randomNumber = Math.random();
+                console.log(randomNumber);
+
+                // Set the probability (5% chance)
+                const probability = 0.05;
+
+                // Check if the random number falls within the desired probability range
+                if (randomNumber < probability) {
+                    interaction.reply(process.env.SURPRISE);
+                    return;
+                }
+
                 // test values
                 // console.log(icons[randomIndex]);
                 // console.log(randomIndex);
