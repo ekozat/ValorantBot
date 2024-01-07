@@ -20,7 +20,7 @@ function getRandomInt(max, excludedNumbers) {
 
 // the structuring (importing package)
 const {Client, IntentsBitField, EmbedBuilder} = require('discord.js');
-const { fetchAgentData } = require('./valorant-api.js');
+const { fetchAgentData, fetchGameData } = require('./valorant-api.js');
 
 // Fetch API data
 fetchAgentData()
@@ -47,6 +47,33 @@ fetchAgentData()
     console.error('Error:', error);
 });
 
+fetchGameData()
+.then(jsonData => {
+    if (Array.isArray(jsonData.data)) {
+        dataLength = jsonData.data.length;
+        // Iterate through the array of agents
+        for (let i = 0; i < dataLength; i++) {
+            const game = jsonData.data[i];
+
+            console.log(game.displayName);
+            
+            // if (agent.isPlayableCharacter == true){
+            //     characters.push(agent.uuid);
+            //     icons.push(agent.displayIcon);
+            // }
+        }
+
+        // Test output
+        // console.log("Random Character UUID:", characters[randomIndex]);
+        // console.log("Corresponding Icon:", icons[randomIndex]);
+    }
+    
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
+
 // initialize client
 const client = new Client({
     // A set of permissions to get access to a set of events
@@ -67,7 +94,9 @@ client.on('interactionCreate', (interaction) => {
     // function only going to run if chat input is true
     if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.commandName == 'valbot'){
+    // console.log(commands[0].name);
+
+    if (interaction.commandName == 'valagents'){
         // Get the number inputted
         let agentNum = interaction.options.get('agents').value;
 
@@ -100,6 +129,10 @@ client.on('interactionCreate', (interaction) => {
         else{
             interaction.reply('Please input an agent range from 1-5.')
         }
+    }
+
+    if (interaction.commandName == 'valgames'){
+        interaction.reply('hi');
     }
 })
 
