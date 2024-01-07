@@ -11,6 +11,13 @@ Better way: `nodemon`
 - `-g` flag should install it globally on device
 - Am not using this method currently
 
+CURRENTLY USING:
+For the dev environment, which is attached to ValFeatureBot in the personal server: 
+- npm run start:dev
+
+For the production env, which is attached to ValorantProject in the Feet server:
+- npm run start:prod
+
 Keeping an instance alive in the back-end processing:
 - `pm2 list` to show all processes
 - `pm2 start ./startscript.js` in order to start an instance on production
