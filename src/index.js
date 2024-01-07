@@ -4,9 +4,11 @@ const environment = process.env.NODE_ENV || 'dev'; // Default to development
 const config = require(`../config_${environment}.js`);
 
 // Handle the data returned by the API
-let dataLength;
 let characters = [];
 let icons = [];
+let modes = [];
+
+let dataLength;
 let randomIndex;
 
 function getRandomInt(max, excludedNumbers) {
@@ -55,17 +57,23 @@ fetchGameData()
         for (let i = 0; i < dataLength; i++) {
             const game = jsonData.data[i];
 
-            console.log(game.displayName);
-            
-            // if (agent.isPlayableCharacter == true){
-            //     characters.push(agent.uuid);
-            //     icons.push(agent.displayIcon);
-            // }
-        }
+            // leave out the gamemodes that are currently not in game
+            if (game.displayName != 'Snowball Fight' && game.displayName != 'Onboarding'
+            && game.displayName != 'Replication'){
 
-        // Test output
-        // console.log("Random Character UUID:", characters[randomIndex]);
-        // console.log("Corresponding Icon:", icons[randomIndex]);
+                // rename certain gamemodes
+                if (game.displayName == 'Standard'){
+                    game.displayName = 'Unrated';
+                }
+                if (game.displayName == 'PRACTICE'){
+                    game.displayName = 'Custom';
+                }
+
+                modes.push(game.displayName);
+            }
+
+            console.log(game.displayName);
+        }
     }
     
 })
@@ -93,11 +101,10 @@ client.on('ready', (c) => {
 client.on('interactionCreate', (interaction) => {
     // function only going to run if chat input is true
     if (!interaction.isChatInputCommand()) return;
-
-    // console.log(commands[0].name);
+    
 
     if (interaction.commandName == 'valagents'){
-        // Get the number inputted
+        // Get user chosen number for number of agents to generate
         let agentNum = interaction.options.get('agents').value;
 
         if (agentNum <= 5 && agentNum >= 1){
@@ -109,8 +116,8 @@ client.on('interactionCreate', (interaction) => {
                 randomIndex = getRandomInt(characters.length, excludedNum);
 
                 // test values
-                console.log(icons[randomIndex]);
-                console.log(randomIndex);
+                // console.log(icons[randomIndex]);
+                // console.log(randomIndex);
 
                 // removes duplicates
                 excludedNum.push(randomIndex);
@@ -118,13 +125,10 @@ client.on('interactionCreate', (interaction) => {
                 // const embed = new EmbedBuilder().setImage(icons[randomIndex]);
                 embeds.push(new EmbedBuilder().setImage(icons[randomIndex]).setColor('#2F3136'));
 
-                // combinedAgents.push(embed);
             }
-            
-            interaction.reply({ embeds});
 
-            // Output icon to the player
-            // interaction.reply(images);
+            // output the images
+            interaction.reply({ embeds});
         }
         else{
             interaction.reply('Please input an agent range from 1-5.')
@@ -132,7 +136,12 @@ client.on('interactionCreate', (interaction) => {
     }
 
     if (interaction.commandName == 'valgames'){
-        interaction.reply('hi');
+        let excludedNum = [];
+        // RNG logic
+        randomIndex = getRandomInt(modes.length, excludedNum);
+        interaction.reply('>>> **' + modes[randomIndex] + '**');
+        console.log(modes[randomIndex]);
+        console.log(randomIndex);
     }
 })
 
