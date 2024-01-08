@@ -24,6 +24,10 @@ const commands = [
         name: 'valgames',
         description: 'Generates a random game mode'
     },
+    {
+        name: 'valweapons',
+        description: 'Generates a random weapon'
+    },
 ];
 
 // implement REST API into project
