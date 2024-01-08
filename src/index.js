@@ -7,6 +7,8 @@ const config = require(`../config_${environment}.js`);
 let characters = [];
 let icons = [];
 let modes = [];
+let weapons = [];
+let weapon_icons = [];
 
 let dataLength;
 let randomIndex;
@@ -22,7 +24,7 @@ function getRandomInt(max, excludedNumbers) {
 
 // the structuring (importing package)
 const {Client, IntentsBitField, EmbedBuilder} = require('discord.js');
-const { fetchAgentData, fetchGameData } = require('./valorant-api.js');
+const { fetchAgentData, fetchGameData, fetchWeaponData } = require('./valorant-api.js');
 
 // Fetch API data
 fetchAgentData()
@@ -71,8 +73,24 @@ fetchGameData()
 
                 modes.push(game.displayName);
             }
+        }
+    }
+    
+})
+.catch(error => {
+    console.error('Error:', error);
+});
 
-            console.log(game.displayName);
+fetchWeaponData()
+.then(jsonData => {
+    if (Array.isArray(jsonData.data)) {
+        dataLength = jsonData.data.length;
+        // Iterate through the array of agents
+        for (let i = 0; i < dataLength; i++) {
+            const weapon = jsonData.data[i];
+            weapons.push(weapon.displayName);
+            weapon_icons.push(weapon.displayIcon);
+
         }
     }
     
@@ -145,7 +163,7 @@ client.on('interactionCreate', (interaction) => {
             interaction.reply({ embeds});
         }
         else{
-            interaction.reply('Please input an agent range from 1-5.')
+            interaction.reply('Please input an agent range from 1-5.');
         }
     }
 
@@ -154,8 +172,28 @@ client.on('interactionCreate', (interaction) => {
         // RNG logic
         randomIndex = getRandomInt(modes.length, excludedNum);
         interaction.reply('>>> **' + modes[randomIndex] + '**');
-        console.log(modes[randomIndex]);
-        console.log(randomIndex);
+
+    }
+
+    if (interaction.commandName == 'valweapons'){
+        let embeds = [];
+        let excludedNum = [];
+        
+        // RNG logic
+        randomIndex = getRandomInt(weapons.length, excludedNum);
+
+        // test values
+        // console.log(icons[randomIndex]);
+        // console.log(randomIndex);
+
+        // removes duplicates
+        // excludedNum.push(randomIndex);
+
+        // const embed = new EmbedBuilder().setImage(icons[randomIndex]);
+        embeds.push(new EmbedBuilder().setImage(weapon_icons[randomIndex]).setColor('#2F3136'));
+
+        // output the images
+        interaction.reply({ embeds});
     }
 })
 
